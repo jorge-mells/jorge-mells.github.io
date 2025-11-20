@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>MarkdownToHTMLForDaddy</title>
+</head>
+
+<body>
+  <h1>Markdown To HTML Converter</h1>
+  <label for="markdown">Please Enter a valid markdown heading string:</label>
+  <input type="text" id="name" name="name" required />
+  <button id="submit" type="button">Submit</button>
+  <h2>Result</h2>
+  <div id="output">
+  </div>
+  <script>
+    function convert(markdown) {
+      if (typeof markdown !== "string") {
+        return "<p>Invalid input</p>"
+      }
+      let letterArray = Array.from(markdown);
+      let hashes = letterArray.filter((letter) => letter === "#");
+      if (hashes.length <= 0) {
+        return "<p>Invalid markdown. Please enter a valid markdown title string</p>";
+      }
+      let title = letterArray.filter((letter) => letter !== "#").join("").trim();
+      result = `<h${hashes.length}>${title}</h${hashes.length}>`;
+      escapedResult = result.replaceAll("<", "&lt;").replace(">", "&gt;")
+      // In case this is needed<h2>Rendered</h2>${result}
+      return `<code><pre>${escapedResult}</pre></code>`;
+    }
+
+    const inputElement = document.querySelector("#name");
+    function handleClick() {
+      // WARN: action required, no input validation!!!!
+      html = convert(inputElement.value);
+      const outputContainer = document.querySelector("#output");
+      outputContainer.innerHTML = html;
+    }
+    const button = document.querySelector("#submit");
+    inputElement.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        handleClick()
+      }
+    })
+    button.addEventListener("click", handleClick);
+
+  </script>
+</body>
+
+</html>
